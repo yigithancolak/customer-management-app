@@ -10,11 +10,12 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { supabase } from '../../supabase/config/supabaseClient'
-import { baseSchema } from '../../validations/validationSchemas'
+import { extendedSchema } from '../../validations/validationSchemas'
 
 interface SignUpFormProps {
   email: string
   password: string
+  companyName: string
 }
 
 export const SignUp = () => {
@@ -27,15 +28,20 @@ export const SignUp = () => {
     formState: { errors },
     watch
   } = useForm<SignUpFormProps>({
-    resolver: yupResolver(baseSchema)
+    resolver: yupResolver(extendedSchema)
   })
 
   const onSubmit: SubmitHandler<SignUpFormProps> = async (userData) => {
-    const { email, password } = userData
+    const { email, password, companyName } = userData
 
     const { data, error } = await supabase.auth.signUp({
       email,
-      password
+      password,
+      options: {
+        data: {
+          company_name: companyName
+        }
+      }
     })
 
     if (error) {
@@ -75,6 +81,17 @@ export const SignUp = () => {
               {...register('password')}
               error={!!errors.password}
               helperText={errors.password?.message}
+            />
+          </Grid>
+
+          <Grid xs={12}>
+            <TextField
+              fullWidth
+              label='Company Name'
+              variant='outlined'
+              {...register('companyName')}
+              error={!!errors.companyName}
+              helperText={errors.companyName?.message}
             />
           </Grid>
 

@@ -10,3 +10,7 @@ export const baseSchema = yup.object().shape({
       'Invalid password'
     )
 })
+
+export const extendedSchema = baseSchema.shape({
+  companyName: yup.string().required('Company name is required')
+})

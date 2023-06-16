@@ -6,10 +6,13 @@ import {
   TextField,
   Typography
 } from '@mui/material'
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { supabase } from '../../supabase/config/supabaseClient'
+import { PasswordCheckList } from '../../components/PasswordChecklist/PasswordChecklist'
+import { StyledLink } from '../../styles/sharedStyles'
+import { useAuth } from '../../utils/hooks/useAuth'
+import { AppRoutes } from '../../utils/routes/appRoutes'
 import { baseSchema } from '../../validations/validationSchemas'
 
 interface SignInFormProps {
@@ -19,6 +22,8 @@ interface SignInFormProps {
 
 export const SignIn = () => {
   const navigate = useNavigate()
+  const { signIn } = useAuth()
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const {
     control,
@@ -33,58 +38,69 @@ export const SignIn = () => {
   const onSubmit: SubmitHandler<SignInFormProps> = async (userData) => {
     const { email, password } = userData
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    })
-
-    if (error) {
-      toast.error('Sign In Error')
-    }
-
-    if (data) {
-      toast.success('Login successful')
-      navigate('/', { replace: true })
-    }
+    await signIn(email, password)
+    navigate('/', { replace: true })
   }
 
   return (
-    <Container component='main' maxWidth='xs'>
-      <Typography variant='h6' align='center' gutterBottom>
-        Sign In
-      </Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={2}>
-          <Grid xs={12}>
-            <TextField
-              fullWidth
-              label='Email'
-              variant='outlined'
-              {...register('email')}
-              error={!!errors.email}
-              helperText={errors.email?.message}
-            />
-          </Grid>
+    <>
+      <PasswordCheckList anchorEl={anchorEl} password={watch('password')} />
 
-          <Grid xs={12}>
-            <TextField
-              fullWidth
-              label='Password'
-              type='password'
-              variant='outlined'
-              {...register('password')}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-            />
-          </Grid>
+      <Container component='main' maxWidth='xs'>
+        <Typography variant='h6' align='center' gutterBottom>
+          Sign In
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={2}>
+            <Grid xs={12}>
+              <TextField
+                fullWidth
+                label='Email'
+                variant='outlined'
+                {...register('email')}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+              />
+            </Grid>
 
-          <Grid xs={12}>
-            <Button fullWidth variant='outlined' type='submit'>
-              Sign In
-            </Button>
+            <Grid xs={12}>
+              <TextField
+                fullWidth
+                label='Password'
+                type='password'
+                variant='outlined'
+                {...register('password')}
+                error={!!errors.password}
+                helperText={errors.password?.message}
+                onFocus={(e) => setAnchorEl(e.currentTarget)}
+                onBlur={() => setAnchorEl(null)}
+              />
+            </Grid>
+
+            <Grid xs={12}>
+              <Button fullWidth variant='outlined' type='submit'>
+                Sign In
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+        <Grid container spacing={2} sx={{ mt: 1 }}>
+          <Grid
+            xs={12}
+            sx={{ display: 'flex', justifyContent: 'space-between' }}
+          >
+            <StyledLink to={AppRoutes.ForgotPassword}>
+              Forgot Password ?
+            </StyledLink>
+            <StyledLink to={AppRoutes.SignUp}>
+              Don't have account? Click and sign up
+            </StyledLink>
+            {/* <StyledLink to={AppRoutes.ResetPassword}>
+                  {t('resetPassword')}
+                </StyledLink> */}
           </Grid>
         </Grid>
-      </form>
-    </Container>
+      </Container>
+    </>
   )
 }
