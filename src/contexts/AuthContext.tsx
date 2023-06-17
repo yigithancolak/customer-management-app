@@ -1,28 +1,53 @@
+import { User } from '@supabase/supabase-js'
 import { PropsWithChildren, createContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { supabase } from '../supabase/config/supabaseClient'
 
-interface AccountContextProps {
+interface AuthContextProps {
   isLoading: boolean
-  accessToken: string | undefined
-  getSession: () => void
+  user: User | null
   signOut: () => void
   signIn: (email: string, password: string) => void
-  //   setAccessToken: Dispatch<SetStateAction<string | undefined>>
+  signUp: (email: string, password: string, companyName: string) => void
+  //   setUser: Dispatch<SetStateAction<string | undefined>>
 }
 
-const AuthContext = createContext<AccountContextProps>({
-  getSession: async () => null,
+const AuthContext = createContext<AuthContextProps>({
   signOut: async () => null,
   signIn: async () => null,
-  accessToken: '',
+  signUp: async () => null,
+  user: null,
   isLoading: true
-  //   setAccessToken: () => null
+  //   setUser: () => null
 })
 
 const AuthProvider = (props: PropsWithChildren) => {
-  const [accessToken, setAccessToken] = useState<string | undefined>('')
+  const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  const signUp = async (
+    email: string,
+    password: string,
+    companyName: string
+  ) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          company_name: companyName
+        }
+      }
+    })
+
+    if (error) {
+      toast.error('Signup Error')
+    }
+
+    if (data) {
+      toast.success('Confirm your email and login')
+    }
+  }
 
   const signIn = async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -35,7 +60,6 @@ const AuthProvider = (props: PropsWithChildren) => {
     }
 
     if (data) {
-      setAccessToken(data.session?.access_token)
       toast.success('Login successful')
     }
   }
@@ -49,37 +73,40 @@ const AuthProvider = (props: PropsWithChildren) => {
     }
 
     toast.error('Signout successfull')
-    setAccessToken('')
   }
 
   const getSession = async () => {
-    const { data, error } = await supabase.auth.getSession()
-    setIsLoading(true)
+    const {
+      data: { user: currentUser }
+    } = await supabase.auth.getUser()
 
-    if (error) {
-      setIsLoading(false)
-      setAccessToken('')
-      return
-    }
-
-    console.log(data?.session?.user.user_metadata.company_name)
-
-    setAccessToken(data?.session?.access_token)
     setIsLoading(false)
+    setUser(currentUser ?? null)
   }
 
   useEffect(() => {
     getSession()
+
+    const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN') {
+        setUser(session?.user ?? null)
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null)
+      }
+    })
+    return () => {
+      data.subscription.unsubscribe()
+    }
   }, [])
 
   return (
     <AuthContext.Provider
       value={{
-        accessToken,
-        getSession,
+        user,
         isLoading,
         signOut,
-        signIn
+        signIn,
+        signUp
       }}
     >
       {props.children}

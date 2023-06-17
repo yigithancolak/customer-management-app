@@ -8,13 +8,14 @@ interface RequireAuthProps {
 
 export const RequireAuth = (props: RequireAuthProps) => {
   const location = useLocation()
-  const { isLoading, accessToken } = useAuth()
+
+  const { user, isLoading } = useAuth()
 
   if (isLoading) {
     return <span>LOADING</span>
   }
 
-  if (!accessToken) {
+  if (!user) {
     return <Navigate to={AppRoutes.SignIn} state={{ from: location }} replace />
   }
 

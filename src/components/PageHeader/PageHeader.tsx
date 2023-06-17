@@ -22,7 +22,12 @@ export const PageHeader = (props: PageHeaderProps) => {
         <ArrowBackIcon />
       </IconButton>
       <Typography variant='h5'>{title}</Typography>
-      <Button endIcon={<ExitToAppIcon />} onClick={() => signOut()}>
+      <Button
+        variant='outlined'
+        sx={{ position: 'absolute', right: 0 }}
+        endIcon={<ExitToAppIcon />}
+        onClick={() => signOut()}
+      >
         Sign Out
       </Button>
     </PageHeaderWrapper>

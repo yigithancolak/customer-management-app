@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import { AuthProvider } from './contexts/AuthContext'
+import { CustomersProvider } from './contexts/CustomersContext'
 import { theme } from './styles/theme'
 import { RequireAuth } from './utils/routes/RequireAuth'
 import { AppRouteDefinitions } from './utils/routes/appRoutes'
@@ -37,11 +38,13 @@ root.render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <BrowserRouter>
-          <CssBaseline />
-          <ToastContainer />
-          <Routes>{renderRoutes()}</Routes>
-        </BrowserRouter>
+        <CustomersProvider>
+          <BrowserRouter>
+            <CssBaseline />
+            <ToastContainer />
+            <Routes>{renderRoutes()}</Routes>
+          </BrowserRouter>
+        </CustomersProvider>
       </AuthProvider>
     </ThemeProvider>
   </StrictMode>

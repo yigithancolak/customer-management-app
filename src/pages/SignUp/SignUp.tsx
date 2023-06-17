@@ -8,8 +8,7 @@ import {
 } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { supabase } from '../../supabase/config/supabaseClient'
+import { useAuth } from '../../utils/hooks/useAuth'
 import { extendedSchema } from '../../validations/validationSchemas'
 
 interface SignUpFormProps {
@@ -19,6 +18,7 @@ interface SignUpFormProps {
 }
 
 export const SignUp = () => {
+  const { signUp } = useAuth()
   const navigate = useNavigate()
 
   const {
@@ -34,24 +34,8 @@ export const SignUp = () => {
   const onSubmit: SubmitHandler<SignUpFormProps> = async (userData) => {
     const { email, password, companyName } = userData
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          company_name: companyName
-        }
-      }
-    })
-
-    if (error) {
-      toast.error('Signup Error')
-    }
-
-    if (data) {
-      toast.success('Confirm your email and login')
-      navigate('/signIn')
-    }
+    signUp(email, password, companyName)
+    navigate('/signIn')
   }
 
   return (
