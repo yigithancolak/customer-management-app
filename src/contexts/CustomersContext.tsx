@@ -3,13 +3,13 @@ import { DatabaseTables, supabase } from '../supabase/config/supabaseClient'
 
 interface CustomersContextProps {
   isLoading: boolean
-  getCustomers: () => void
+  getCustomers: () => Promise<any>
   createCustomer: () => void
   //   setAccessToken: Dispatch<SetStateAction<string | undefined>>
 }
 
 const CustomersContext = createContext<CustomersContextProps>({
-  getCustomers: () => null,
+  getCustomers: () => Promise.resolve([]),
   createCustomer: () => null,
   isLoading: true
   //   setAccessToken: () => null
@@ -23,9 +23,11 @@ const CustomersProvider = (props: PropsWithChildren) => {
     const { data, error } = await supabase
       .from(DatabaseTables.Customers)
       .select()
-    if (data) {
-      //   console.log(data)
+    if (error) {
+      throw error
     }
+
+    return data
   }
 
   const createCustomer = async () => {
