@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'react'
+import { CreateCustomer } from '../../pages/CreateCustomer/CreateCustomer'
 import { Dashboard } from '../../pages/Dashboard/Dashboard'
 import { ErrorPage } from '../../pages/ErrorPage/ErrorPage'
 import { ForgotPassword } from '../../pages/ForgotPassword/ForgotPassword'
@@ -14,6 +15,7 @@ interface AppRouteDefinitionProps {
 }
 
 export enum AppRoutes {
+  CreateCustomer = '/createCustomer',
   ForgotPassword = '/forgotPassword',
   SignIn = '/signIn',
   SignUp = '/signUp',
@@ -58,6 +60,12 @@ export const AppRouteDefinitions: AppRouteDefinitionProps[] = [
     path: AppRoutes.Root,
     name: 'Dashboard',
     element: Dashboard,
+    isProtected: true
+  },
+  {
+    path: AppRoutes.CreateCustomer,
+    name: 'Create Customer',
+    element: CreateCustomer,
     isProtected: true
   }
 ]

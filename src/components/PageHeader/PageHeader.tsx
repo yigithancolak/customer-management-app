@@ -1,10 +1,10 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ExitToAppIcon from '@mui/icons-material/ExitToApp'
-import { Button, IconButton, Typography } from '@mui/material'
+import { IconButton, Typography } from '@mui/material'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../contexts/AuthContext'
 import { AppRoutes } from '../../utils/routes/appRoutes'
+import { DrawerMenu } from '../DrawerMenu/DrawerMenu'
 import { PageHeaderWrapper } from './Wrapper'
 
 interface PageHeaderProps {
@@ -22,14 +22,7 @@ export const PageHeader = (props: PageHeaderProps) => {
         <ArrowBackIcon />
       </IconButton>
       <Typography variant='h5'>{title}</Typography>
-      <Button
-        variant='outlined'
-        sx={{ position: 'absolute', right: 0 }}
-        endIcon={<ExitToAppIcon />}
-        onClick={() => signOut()}
-      >
-        Sign Out
-      </Button>
+      <DrawerMenu />
     </PageHeaderWrapper>
   )
 }

@@ -4,12 +4,11 @@ import { ColumnDef } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { ReusableTable } from '../../components/ReusableTable/ReusableTable'
+import { Customers } from '../../contexts/CustomersContext'
 import { useCustomers } from '../../utils/hooks/useCustomers'
 
 export const Dashboard = () => {
   const { createCustomer, getCustomers } = useCustomers()
-
-  // getCustomers()
 
   const { isFetching, data } = useQuery({
     queryKey: ['getCustomers'],
@@ -19,7 +18,7 @@ export const Dashboard = () => {
 
   console.log(data)
 
-  const columns = useMemo<ColumnDef<any>[]>(
+  const columns = useMemo<ColumnDef<Customers>[]>(
     () => [
       {
         header: 'Name',
@@ -52,7 +51,7 @@ export const Dashboard = () => {
   return (
     <Container component='main'>
       <PageHeader title='Dashboard' />
-      <ReusableTable<any>
+      <ReusableTable<Customers>
         data={data}
         isFetching={isFetching}
         title='Customers'

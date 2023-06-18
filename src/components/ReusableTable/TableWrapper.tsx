@@ -3,7 +3,7 @@ import { styled } from '@mui/material'
 export const TableWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(2),
   '& table': {
-    borderCollapse: 'collapse'
+    borderCollapse: 'separate'
   },
   '& thead': {
     '& th': {
@@ -18,7 +18,7 @@ export const TableWrapper = styled('div')(({ theme }) => ({
 
   '& tbody tr:nth-of-type(even)': {
     '& td': {
-      backgroundColor: theme.palette.grey[100]
+      backgroundColor: theme.palette.grey[300]
     }
   },
 

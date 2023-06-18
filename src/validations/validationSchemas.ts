@@ -14,3 +14,12 @@ export const baseSchema = yup.object().shape({
 export const extendedSchema = baseSchema.shape({
   companyName: yup.string().required('Company name is required')
 })
+
+export const createCustomerSchema = yup.object().shape({
+  name: yup.string().required('Name required'),
+  phone: yup.string().required('Phone required'),
+  group: yup.string().required('Group required'),
+  last_payment_date: yup.string().required('Last payment date required'),
+  next_payment_date: yup.string().required('Next payment date required'),
+  payment: yup.string().required('Payment required')
+})

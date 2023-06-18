@@ -1,12 +1,17 @@
 import { PropsWithChildren, createContext, useState } from 'react'
+import { CreateCustomerFormProps } from '../pages/CreateCustomer/CreateCustomer'
 import { DatabaseTables, supabase } from '../supabase/config/supabaseClient'
+import { Database } from '../supabase/types'
+import { useAuth } from '../utils/hooks/useAuth'
 
 interface CustomersContextProps {
   isLoading: boolean
-  getCustomers: () => Promise<any>
-  createCustomer: () => void
+  getCustomers: () => Promise<Customers[]>
+  createCustomer: (payload: CreateCustomerFormProps) => void
   //   setAccessToken: Dispatch<SetStateAction<string | undefined>>
 }
+
+export type Customers = Database['public']['Tables']['Customers']['Row']
 
 const CustomersContext = createContext<CustomersContextProps>({
   getCustomers: () => Promise.resolve([]),
@@ -19,6 +24,8 @@ const CustomersProvider = (props: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState(false)
   const [customers, setCustomers] = useState([])
 
+  const { user } = useAuth()
+
   const getCustomers = async () => {
     const { data, error } = await supabase
       .from(DatabaseTables.Customers)
@@ -30,21 +37,31 @@ const CustomersProvider = (props: PropsWithChildren) => {
     return data
   }
 
-  const createCustomer = async () => {
+  const createCustomer = async (payload: CreateCustomerFormProps) => {
+    const {
+      name,
+      phone,
+      group,
+      last_payment_date,
+      next_payment_date,
+      payment
+    } = payload
     const { error } = await supabase
       .from(DatabaseTables.Customers)
       .insert({
-        // user_id: '69bf68e2-55b6-47d3-af31-b25ac2c14498',
-        name: 'Nisa',
-        phone: '+95648422',
-        group: 'hiphop',
-        last_payment_date: 'yesterday',
-        next_payment_date: 'tomorrow',
-        payment: '300'
+        user_id: user?.id ?? '',
+        name,
+        phone,
+        group,
+        last_payment_date,
+        next_payment_date,
+        payment
       })
       .select()
 
-    console.log(error)
+    if (error) {
+      console.log(error)
+    }
   }
 
   return (
