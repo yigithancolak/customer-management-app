@@ -1,9 +1,10 @@
 import LogoutIcon from '@mui/icons-material/Logout'
+import MenuOpenIcon from '@mui/icons-material/MenuOpen'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import TableViewIcon from '@mui/icons-material/TableView'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import Drawer from '@mui/material/Drawer'
+import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -77,12 +78,13 @@ export const DrawerMenu = () => {
     <div style={{ zIndex: 10 }}>
       {
         <>
-          <Button
+          <IconButton
+            aria-label='delete'
             sx={{ position: 'absolute', right: 0 }}
             onClick={toggleDrawer(true)}
           >
-            Left
-          </Button>
+            <MenuOpenIcon />
+          </IconButton>
           <Drawer anchor='left' open={isOpen} onClose={toggleDrawer(false)}>
             <MenuList />
           </Drawer>

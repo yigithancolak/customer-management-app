@@ -7,5 +7,6 @@ const supabaseKey = import.meta.env.VITE_ANON_KEY
 export const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
 export enum DatabaseTables {
-  Customers = 'Customers'
+  Customers = 'Customers',
+  Groups = 'Groups'
 }

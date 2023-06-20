@@ -3,8 +3,10 @@ import { CreateCustomer } from '../../pages/CreateCustomer/CreateCustomer'
 import { Dashboard } from '../../pages/Dashboard/Dashboard'
 import { ErrorPage } from '../../pages/ErrorPage/ErrorPage'
 import { ForgotPassword } from '../../pages/ForgotPassword/ForgotPassword'
+import { Groups } from '../../pages/Groups/Groups'
 import { SignIn } from '../../pages/SignIn/SignIn'
 import { SignUp } from '../../pages/SignUp/SignUp'
+import { UpdateCustomer } from '../../pages/UpdateCustomer/UpdateCustomer'
 
 interface AppRouteDefinitionProps {
   path: AppRoutes
@@ -15,6 +17,8 @@ interface AppRouteDefinitionProps {
 }
 
 export enum AppRoutes {
+  Groups = '/groups',
+  Customer = '/customers/:id',
   CreateCustomer = '/createCustomer',
   ForgotPassword = '/forgotPassword',
   SignIn = '/signIn',
@@ -66,6 +70,18 @@ export const AppRouteDefinitions: AppRouteDefinitionProps[] = [
     path: AppRoutes.CreateCustomer,
     name: 'Create Customer',
     element: CreateCustomer,
+    isProtected: true
+  },
+  {
+    path: AppRoutes.Customer,
+    name: 'Customer',
+    element: UpdateCustomer,
+    isProtected: true
+  },
+  {
+    path: AppRoutes.Groups,
+    name: 'Groups',
+    element: Groups,
     isProtected: true
   }
 ]

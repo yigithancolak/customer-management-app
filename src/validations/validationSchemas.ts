@@ -23,3 +23,7 @@ export const createCustomerSchema = yup.object().shape({
   next_payment_date: yup.string().required('Next payment date required'),
   payment: yup.string().required('Payment required')
 })
+
+export const createGroupSchema = yup.object().shape({
+  group_name: yup.string().required('Group required')
+})
