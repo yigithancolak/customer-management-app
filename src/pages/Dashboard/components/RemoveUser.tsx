@@ -16,12 +16,13 @@ import { useCustomers } from '../../../utils/hooks/useCustomers'
 interface RemoveUserProps {
   id: number
   name: string | null
+  refetchCustomers: () => void
 }
 
 export const RemoveUser = (props: RemoveUserProps) => {
   const queryClient = useQueryClient()
   const { deleteCustomer } = useCustomers()
-  const { id, name } = props
+  const { id, name, refetchCustomers } = props
   const [open, setOpen] = useState(false)
 
   const { mutateAsync: removeCustomer, isLoading } = useMutation({
@@ -29,7 +30,10 @@ export const RemoveUser = (props: RemoveUserProps) => {
     onError: () => toast.error('Customer remove error'),
     onSuccess: () => {
       toast.success('Customer removed')
-      queryClient.invalidateQueries({ queryKey: ['getCustomers'] })
+      // queryClient.invalidateQueries({
+      //   queryKey: ['getCustomers', 'getFilteredCustomers']
+      // })
+      refetchCustomers()
     }
   })
 

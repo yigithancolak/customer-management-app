@@ -7,6 +7,7 @@ import { useAuth } from '../utils/hooks/useAuth'
 interface CustomersContextProps {
   isLoading: boolean
   getCustomers: () => Promise<Customers[]>
+  getFilteredCustomers: (group: string) => Promise<Customers[]>
   createCustomer: (payload: CreateCustomerFormProps) => void
   deleteCustomer: (id: number) => void
   updateCustomer: (
@@ -16,6 +17,7 @@ interface CustomersContextProps {
   getCustomerData: (id: string | undefined) => Promise<Customers>
   getGroups: () => Promise<GroupsTypes[]>
   createGroup: (group_name: string) => void
+  deleteGroup: (id: string) => void
   //   setAccessToken: Dispatch<SetStateAction<string | undefined>>
 }
 
@@ -24,6 +26,7 @@ export type GroupsTypes = Database['public']['Tables']['Groups']['Row']
 
 const CustomersContext = createContext<CustomersContextProps>({
   getCustomers: () => Promise.resolve([]),
+  getFilteredCustomers: () => Promise.resolve([]),
   createCustomer: () => null,
   deleteCustomer: () => null,
   updateCustomer: () => null,
@@ -41,6 +44,7 @@ const CustomersContext = createContext<CustomersContextProps>({
     }),
   getGroups: () => Promise.resolve([]),
   createGroup: () => null,
+  deleteGroup: () => null,
   isLoading: true
   //   setAccessToken: () => null
 })
@@ -55,6 +59,19 @@ const CustomersProvider = (props: PropsWithChildren) => {
     const { data, error } = await supabase
       .from(DatabaseTables.Customers)
       .select()
+    if (error) {
+      throw error
+    }
+
+    return data
+  }
+
+  const getFilteredCustomers = async (group: string) => {
+    const { data, error } = await supabase
+      .from(DatabaseTables.Customers)
+      .select()
+      .eq('group', group)
+
     if (error) {
       throw error
     }
@@ -115,6 +132,8 @@ const CustomersProvider = (props: PropsWithChildren) => {
     return data[0]
   }
 
+  //GROUPS
+
   const getGroups = async () => {
     const { data, error } = await supabase.from(DatabaseTables.Groups).select()
     if (error) {
@@ -140,17 +159,30 @@ const CustomersProvider = (props: PropsWithChildren) => {
     }
   }
 
+  const deleteGroup = async (groupName: string) => {
+    const { error } = await supabase
+      .from(DatabaseTables.Groups)
+      .delete()
+      .eq('group_name', groupName)
+
+    if (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <CustomersContext.Provider
       value={{
         getCustomers,
+        getFilteredCustomers,
         isLoading,
         createCustomer,
         deleteCustomer,
         updateCustomer,
         getCustomerData,
         getGroups,
-        createGroup
+        createGroup,
+        deleteGroup
       }}
     >
       {props.children}

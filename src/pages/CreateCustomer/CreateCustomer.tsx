@@ -2,18 +2,22 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import {
   Button,
   Container,
+  FormControl,
   Unstable_Grid2 as Grid,
-  TextField
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography
 } from '@mui/material'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateField } from '@mui/x-date-pickers/DateField'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import * as dayjs from 'dayjs'
 //@ts-ignore
 import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'
 import { Controller, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { Customers } from '../../contexts/CustomersContext'
@@ -38,19 +42,22 @@ export type CreateCustomerFormProps = NonNullableProperties<
 >
 
 export const CreateCustomer = () => {
-  const navigate = useNavigate()
-  const { createCustomer } = useCustomers()
-  const queryClient = useQueryClient()
+  const { createCustomer, getGroups } = useCustomers()
 
   const {
     control,
     handleSubmit,
     register,
     formState: { errors },
-    watch,
     reset
   } = useForm<CreateCustomerFormProps>({
     resolver: yupResolver(createCustomerSchema)
+  })
+
+  const { data: groupsData, refetch: refetchGroups } = useQuery({
+    queryKey: ['getGroups'],
+    queryFn: () => getGroups(),
+    refetchOnWindowFocus: false
   })
 
   const { mutateAsync: addCustomer, isLoading } = useMutation({
@@ -68,6 +75,17 @@ export const CreateCustomer = () => {
       ...data
     })
     reset()
+  }
+
+  if (groupsData && groupsData.length < 1) {
+    return (
+      <Container component='main' maxWidth='xs'>
+        <PageHeader title='Create Customer' />
+        <Typography>
+          Please create a group from Groups page before you create a customer
+        </Typography>
+      </Container>
+    )
   }
 
   return (
@@ -108,14 +126,30 @@ export const CreateCustomer = () => {
           </Grid>
 
           <Grid xs={12}>
-            <TextField
-              fullWidth
-              label='Group'
-              variant='outlined'
-              {...register('group')}
-              error={!!errors.group}
-              helperText={errors.group?.message}
-            />
+            <FormControl fullWidth>
+              <InputLabel id='demo-simple-select-label'>
+                Select a group
+              </InputLabel>
+              <Select
+                labelId='demo-simple-select-label'
+                id='demo-simple-select'
+                disabled={groupsData && groupsData?.length < 1}
+                label='Select a group'
+                placeholder='Select Group'
+                {...register('group')}
+                defaultValue={''}
+                error={!!errors.group}
+              >
+                {groupsData?.map((group) => {
+                  const { id, group_name } = group
+                  return (
+                    <MenuItem key={id} value={group_name || ''}>
+                      {group_name}
+                    </MenuItem>
+                  )
+                })}
+              </Select>
+            </FormControl>
           </Grid>
 
           <Grid xs={12}>

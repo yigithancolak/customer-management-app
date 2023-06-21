@@ -1,3 +1,4 @@
+import { Groups } from '@mui/icons-material'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
@@ -43,6 +44,11 @@ export const DrawerMenu = () => {
       text: 'Create Customer',
       icon: <PersonAddIcon />,
       path: AppRoutes.CreateCustomer
+    },
+    {
+      text: 'Groups',
+      icon: <Groups />,
+      path: AppRoutes.Groups
     },
     {
       text: 'Sign Out',

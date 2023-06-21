@@ -3,7 +3,6 @@ import { IconButton, Typography } from '@mui/material'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../contexts/AuthContext'
-import { AppRoutes } from '../../utils/routes/appRoutes'
 import { DrawerMenu } from '../DrawerMenu/DrawerMenu'
 import { PageHeaderWrapper } from './Wrapper'
 
@@ -18,7 +17,7 @@ export const PageHeader = (props: PageHeaderProps) => {
 
   return (
     <PageHeaderWrapper>
-      <IconButton onClick={() => navigate(AppRoutes.Root)}>
+      <IconButton onClick={() => navigate(-1)}>
         <ArrowBackIcon />
       </IconButton>
       <Typography variant='h5'>{title}</Typography>

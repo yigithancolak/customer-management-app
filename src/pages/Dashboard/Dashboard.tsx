@@ -14,13 +14,15 @@ export const Dashboard = () => {
   const { createCustomer, getCustomers } = useCustomers()
   const navigate = useNavigate()
 
-  const { isFetching, data } = useQuery({
+  const {
+    isFetching,
+    data,
+    refetch: refetchCustomers
+  } = useQuery({
     queryKey: ['getCustomers'],
     queryFn: () => getCustomers(),
     refetchOnWindowFocus: false
   })
-
-  console.log(data)
 
   const columns = useMemo<ColumnDef<Customers>[]>(
     () => [
@@ -36,7 +38,7 @@ export const Dashboard = () => {
             <Typography
               sx={{ cursor: 'pointer' }}
               onClick={() => {
-                navigate(`customers/${cell.row.original.id}`)
+                navigate(`/customers/${cell.row.original.id}`)
               }}
               color={isAfter ? 'red' : 'green'}
             >
@@ -72,6 +74,7 @@ export const Dashboard = () => {
           <RemoveUser
             id={cell.getValue<number>()}
             name={cell.row.original.name}
+            refetchCustomers={refetchCustomers}
           />
         )
       }
