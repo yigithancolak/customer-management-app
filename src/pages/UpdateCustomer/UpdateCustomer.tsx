@@ -11,7 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateField } from '@mui/x-date-pickers/DateField'
 import { useMutation } from '@tanstack/react-query'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { useState } from 'react'
 //@ts-ignore
 import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'

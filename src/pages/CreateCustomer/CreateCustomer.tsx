@@ -15,7 +15,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateField } from '@mui/x-date-pickers/DateField'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 //@ts-ignore
 import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'
 import { useEffect } from 'react'
@@ -61,7 +61,6 @@ export const CreateCustomer = () => {
     onError: () => toast.error('Create customer error!'),
     onSuccess: () => {
       toast.success('Customer created')
-      // queryClient.invalidateQueries({ queryKey: ['getCustomers'] })
     }
   })
 
