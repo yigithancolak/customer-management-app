@@ -53,7 +53,7 @@ export const PassCheckContent = styled(CardContent)(({ theme }) => ({
   padding: theme.spacing(3, 3, 3, 4)
 }))
 
-export const PopUpMenu = styled(Menu)(({ theme }) => ({
+export const PopUpMenu = styled(Menu)(() => ({
   PaperProps: {
     elevation: 0,
     overflow: 'visible',

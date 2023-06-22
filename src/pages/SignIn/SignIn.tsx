@@ -26,7 +26,6 @@ export const SignIn = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const {
-    control,
     handleSubmit,
     register,
     formState: { errors },
@@ -39,7 +38,7 @@ export const SignIn = () => {
     const { email, password } = userData
 
     await signIn(email, password)
-    navigate('/', { replace: true })
+    navigate(AppRoutes.Root, { replace: true })
   }
 
   return (

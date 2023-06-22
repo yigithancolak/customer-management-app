@@ -49,13 +49,13 @@ export const CreateCustomer = () => {
     resolver: yupResolver(createCustomerSchema)
   })
 
-  const { data: groupsData, refetch: refetchGroups } = useQuery({
+  const { data: groupsData } = useQuery({
     queryKey: ['getGroups'],
     queryFn: () => getGroups(),
     refetchOnWindowFocus: false
   })
 
-  const { mutateAsync: addCustomer, isLoading } = useMutation({
+  const { mutateAsync: addCustomer } = useMutation({
     mutationFn: async (payload: CreateCustomerFormProps) =>
       createCustomer(payload),
     onError: () => toast.error('Create customer error!'),

@@ -34,7 +34,7 @@ export type CreateCustomerFormProps = NonNullableProperties<
 
 export const UpdateCustomer = () => {
   const navigate = useNavigate()
-  const { updateCustomer, getCustomerData, getGroups } = useCustomers()
+  const { updateCustomer, getCustomerData } = useCustomers()
   const { id } = useParams()
   const [isEditing, setIsEditing] = useState({
     lastPayment: false,
@@ -45,8 +45,7 @@ export const UpdateCustomer = () => {
     control,
     handleSubmit,
     register,
-    formState: { errors },
-    reset
+    formState: { errors }
   } = useForm<CreateCustomerFormProps>({
     resolver: yupResolver(createCustomerSchema),
     //@ts-ignore
@@ -57,7 +56,7 @@ export const UpdateCustomer = () => {
     }
   })
 
-  const { mutateAsync: editCustomer, isLoading } = useMutation({
+  const { mutateAsync: editCustomer } = useMutation({
     mutationFn: async (payload: CreateCustomerFormProps) =>
       updateCustomer(id, payload),
     onError: () => toast.error('Create customer error!'),

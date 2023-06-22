@@ -1,5 +1,4 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import { useQueryClient } from '@tanstack/react-query'
 import { Dispatch, SetStateAction } from 'react'
 import { GroupsTypes } from '../../../contexts/CustomersContext'
 
@@ -11,7 +10,6 @@ interface SelectGroupProps {
 
 export const SelectGroup = (props: SelectGroupProps) => {
   const { selectedGroup, setSelectedGroup, data } = props
-  const queryClient = useQueryClient()
 
   return (
     <FormControl fullWidth>

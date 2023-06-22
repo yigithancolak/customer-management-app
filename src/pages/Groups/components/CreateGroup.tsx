@@ -24,7 +24,7 @@ export const CreateGroup = () => {
     resolver: yupResolver(createGroupSchema)
   })
 
-  const { mutateAsync: addGroup, isLoading } = useMutation({
+  const { mutateAsync: addGroup } = useMutation({
     mutationFn: async (group_name: string) => createGroup(group_name),
     onError: () => toast.error('Create group error!'),
     onSuccess: () => {

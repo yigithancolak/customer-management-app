@@ -1,11 +1,10 @@
-import { PropsWithChildren, createContext, useState } from 'react'
+import { PropsWithChildren, createContext } from 'react'
 import { CreateCustomerFormProps } from '../pages/CreateCustomer/CreateCustomer'
 import { DatabaseTables, supabase } from '../supabase/config/supabaseClient'
 import { Database } from '../supabase/types'
 import { useAuth } from '../utils/hooks/useAuth'
 
 interface CustomersContextProps {
-  isLoading: boolean
   getCustomers: () => Promise<Customers[]>
   getFilteredCustomers: (group: string) => Promise<Customers[]>
   createCustomer: (payload: CreateCustomerFormProps) => void
@@ -43,13 +42,10 @@ const CustomersContext = createContext<CustomersContextProps>({
     }),
   getGroups: () => Promise.resolve([]),
   createGroup: () => null,
-  deleteGroup: () => null,
-  isLoading: true
+  deleteGroup: () => null
 })
 
 const CustomersProvider = (props: PropsWithChildren) => {
-  const [isLoading, setIsLoading] = useState(false)
-
   const { user } = useAuth()
 
   const getCustomers = async () => {
@@ -176,7 +172,6 @@ const CustomersProvider = (props: PropsWithChildren) => {
       value={{
         getCustomers,
         getFilteredCustomers,
-        isLoading,
         createCustomer,
         deleteCustomer,
         updateCustomer,
