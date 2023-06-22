@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-table'
 
 import { useMemo } from 'react'
+import { theme } from '../../styles/theme'
 import { TitleCard } from '../TitleCard/TitleCard'
 import { TableWrapper } from './TableWrapper'
 
@@ -46,7 +47,7 @@ export const ReusableTable = <T,>(props: ReusableTableProps<T>) => {
     <TableWrapper>
       <TitleCard title={title} />
       <table style={{ width: '100%' }}>
-        <thead>
+        <thead style={{ backgroundColor: theme.palette.secondary.main }}>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (

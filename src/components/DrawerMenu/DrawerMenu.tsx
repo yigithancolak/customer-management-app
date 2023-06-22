@@ -86,12 +86,12 @@ export const DrawerMenu = () => {
         <>
           <IconButton
             aria-label='delete'
-            sx={{ position: 'absolute', right: 0 }}
+            sx={{ position: 'absolute', right: 10, width: 50, height: 50 }}
             onClick={toggleDrawer(true)}
           >
             <MenuOpenIcon />
           </IconButton>
-          <Drawer anchor='left' open={isOpen} onClose={toggleDrawer(false)}>
+          <Drawer anchor='right' open={isOpen} onClose={toggleDrawer(false)}>
             <MenuList />
           </Drawer>
         </>

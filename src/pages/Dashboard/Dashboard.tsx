@@ -1,17 +1,18 @@
 import { Container, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
-import * as dayjs from 'dayjs'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { ReusableTable } from '../../components/ReusableTable/ReusableTable'
 import { Customers } from '../../contexts/CustomersContext'
+import { theme } from '../../styles/theme'
+import { calculateIsAfter } from '../../utils/helpers/helperFunctions'
 import { useCustomers } from '../../utils/hooks/useCustomers'
 import { RemoveUser } from './components/RemoveUser'
 
 export const Dashboard = () => {
-  const { createCustomer, getCustomers } = useCustomers()
+  const { getCustomers } = useCustomers()
   const navigate = useNavigate()
 
   const {
@@ -31,8 +32,6 @@ export const Dashboard = () => {
         accessorKey: 'name',
         cell: (cell) => {
           const name = cell.row.original.name
-          const nextPayment = cell.row.original.next_payment_date
-          const isAfter = dayjs(new Date()).isAfter(dayjs(nextPayment))
 
           return (
             <Typography
@@ -40,7 +39,11 @@ export const Dashboard = () => {
               onClick={() => {
                 navigate(`/customers/${cell.row.original.id}`)
               }}
-              color={isAfter ? 'red' : 'green'}
+              color={
+                calculateIsAfter(cell.row.original.next_payment_date)
+                  ? theme.palette.error.main
+                  : theme.palette.success.main
+              }
             >
               {name}
             </Typography>

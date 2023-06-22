@@ -22,20 +22,23 @@ export const theme = createTheme({
   },
   palette: {
     background: {
-      default: '#F5F5F5'
+      default: '#FAFAFA'
     },
-    text: { primary: '#333333' },
+    text: { primary: '#695F5C' },
     primary: {
-      main: '#A08B9C'
+      main: '#554D4D'
+    },
+    secondary: {
+      main: '#F1F1F1'
     },
     error: {
       main: '#E74C3C'
     },
     warning: {
-      main: '#FFA500'
+      main: '#F10000'
     },
     success: {
-      main: '#2ECC71'
+      main: '#0AE000'
     }
   }
 })

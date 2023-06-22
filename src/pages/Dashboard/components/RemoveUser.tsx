@@ -1,6 +1,7 @@
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -8,7 +9,7 @@ import {
   DialogTitle,
   IconButton
 } from '@mui/material'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useCustomers } from '../../../utils/hooks/useCustomers'
@@ -20,7 +21,6 @@ interface RemoveUserProps {
 }
 
 export const RemoveUser = (props: RemoveUserProps) => {
-  const queryClient = useQueryClient()
   const { deleteCustomer } = useCustomers()
   const { id, name, refetchCustomers } = props
   const [open, setOpen] = useState(false)
@@ -30,9 +30,6 @@ export const RemoveUser = (props: RemoveUserProps) => {
     onError: () => toast.error('Customer remove error'),
     onSuccess: () => {
       toast.success('Customer removed')
-      // queryClient.invalidateQueries({
-      //   queryKey: ['getCustomers', 'getFilteredCustomers']
-      // })
       refetchCustomers()
     }
   })
@@ -60,13 +57,14 @@ export const RemoveUser = (props: RemoveUserProps) => {
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
+            disabled={isLoading}
             onClick={() => {
               removeCustomer(id)
               handleClose()
             }}
             autoFocus
           >
-            Confirm
+            {isLoading ? <CircularProgress size={14} /> : 'Confirm'}
           </Button>
         </DialogActions>
       </Dialog>

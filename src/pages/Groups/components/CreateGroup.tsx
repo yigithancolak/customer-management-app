@@ -36,6 +36,7 @@ export const CreateGroup = () => {
   const onSubmit = (data: CreateGroupFormTypes) => {
     const { group_name } = data
     addGroup(group_name)
+    reset()
   }
 
   return (

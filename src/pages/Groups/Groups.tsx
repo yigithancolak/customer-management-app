@@ -95,42 +95,46 @@ export const Groups = () => {
         )
       }
     ],
-    [selectedGroup]
+    []
   )
 
   return (
-    <GroupsWrapper>
+    <>
       <PageHeader title='Groups' />
-      <Container component='main'>
-        <Grid container spacing={2} display='flex' justifyContent='center'>
-          <Grid xs={9} sm={3}>
-            <CreateGroup />
-          </Grid>
-          <Grid xs={9} sm={3}>
-            <SelectGroup
-              data={groupsData}
-              selectedGroup={selectedGroup}
-              setSelectedGroup={setSelectedGroup}
-            />
-          </Grid>
-          <Grid xs={12} position='relative'>
-            {selectedGroup && (
-              <RemoveGroup
-                setSelectedGroup={setSelectedGroup}
-                selectedGroup={selectedGroup}
-                refetchGroups={refetchGroups}
-              />
+      <GroupsWrapper>
+        <Container component='main'>
+          <Grid container spacing={2} display='flex' justifyContent='center'>
+            <Grid xs={9} sm={3}>
+              <CreateGroup />
+            </Grid>
+            {groupsData && groupsData.length > 0 && (
+              <Grid xs={9} sm={3}>
+                <SelectGroup
+                  data={groupsData}
+                  selectedGroup={selectedGroup}
+                  setSelectedGroup={setSelectedGroup}
+                />
+              </Grid>
             )}
+            {selectedGroup && (
+              <Grid xs={12} position='relative'>
+                <RemoveGroup
+                  setSelectedGroup={setSelectedGroup}
+                  selectedGroup={selectedGroup}
+                  refetchGroups={refetchGroups}
+                />
 
-            <ReusableTable<Customers>
-              data={filteredData || []}
-              isFetching={fetchingCustomers}
-              columns={columns}
-              title={selectedGroup || 'Select a Group for displaying table'}
-            />
+                <ReusableTable<Customers>
+                  data={filteredData || []}
+                  isFetching={fetchingCustomers}
+                  columns={columns}
+                  title={selectedGroup || 'Select a Group for displaying table'}
+                />
+              </Grid>
+            )}
           </Grid>
-        </Grid>
-      </Container>
-    </GroupsWrapper>
+        </Container>
+      </GroupsWrapper>
+    </>
   )
 }

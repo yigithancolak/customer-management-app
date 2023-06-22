@@ -9,6 +9,7 @@ export const TitleCard = (props: TitleCardProps) => {
     <Typography
       variant='h6'
       sx={(theme) => ({ color: theme.palette.primary.main, mb: 2 })}
+      textTransform='uppercase'
     >
       {props.title}
     </Typography>

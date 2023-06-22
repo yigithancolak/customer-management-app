@@ -6,8 +6,3 @@ export const GroupsWrapper = styled(Container)(({ theme }) => ({
   gap: theme.spacing(2),
   paddingTop: theme.spacing(4)
 }))
-
-export const CreateGroupWrapper = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center'
-}))

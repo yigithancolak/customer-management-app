@@ -21,9 +21,6 @@ export const RemoveGroup = (props: RemoveGroupProps) => {
     onSuccess: () => {
       toast.success('Group removed')
       refetchGroups()
-      //   queryClient.invalidateQueries({
-      //     queryKey: ['getFilteredCustomers', 'getGroups']
-      //   })
     }
   })
   return (
@@ -35,9 +32,9 @@ export const RemoveGroup = (props: RemoveGroupProps) => {
       }}
       sx={{
         position: 'absolute',
-        right: 50,
-        top: 10,
-        fontSize: 12
+        right: 10,
+        top: 20,
+        fontSize: 10
       }}
       color='error'
       disabled={isLoading}

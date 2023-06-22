@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
   Button,
+  CircularProgress,
   Container,
   FormControl,
   Unstable_Grid2 as Grid,
@@ -17,21 +18,15 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import * as dayjs from 'dayjs'
 //@ts-ignore
 import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'
+import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { Customers } from '../../contexts/CustomersContext'
 import { useCustomers } from '../../utils/hooks/useCustomers'
+import { AppRoutes } from '../../utils/routes/appRoutes'
 import { createCustomerSchema } from '../../validations/validationSchemas'
-
-// export interface CreateCustomerFormProps {
-//   name: string
-//   phone: string
-//   group: string
-//   last_payment_date: string
-//   next_payment_date: string
-//   payment: string
-// }
 
 type NonNullableProperties<T> = {
   [K in keyof T as T[K] extends null ? never : K]: NonNullable<T[K]>
@@ -43,13 +38,13 @@ export type CreateCustomerFormProps = NonNullableProperties<
 
 export const CreateCustomer = () => {
   const { createCustomer, getGroups } = useCustomers()
+  const navigate = useNavigate()
 
   const {
     control,
     handleSubmit,
     register,
-    formState: { errors },
-    reset
+    formState: { errors }
   } = useForm<CreateCustomerFormProps>({
     resolver: yupResolver(createCustomerSchema)
   })
@@ -74,138 +69,164 @@ export const CreateCustomer = () => {
     addCustomer({
       ...data
     })
-    reset()
+    navigate(-1)
   }
+
+  useEffect(() => {
+    if (groupsData && groupsData.length > 0) {
+      return
+    }
+
+    const navigateTimeout = setTimeout(() => {
+      navigate(AppRoutes.Groups)
+    }, 3000)
+
+    return () => {
+      clearTimeout(navigateTimeout)
+    }
+  }, [])
 
   if (groupsData && groupsData.length < 1) {
     return (
-      <Container component='main' maxWidth='xs'>
+      <Container
+        component='main'
+        maxWidth='xs'
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      >
         <PageHeader title='Create Customer' />
-        <Typography>
-          Please create a group from Groups page before you create a customer
+        <Typography textAlign='center'>
+          Please create a group from Groups page before you create a customer.
+          Redirecting to groups page
         </Typography>
+        <CircularProgress />
       </Container>
     )
   }
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <>
       <PageHeader title='Create Customer' />
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={2}>
-          <Grid xs={12}>
-            <TextField
-              fullWidth
-              label='Name'
-              variant='outlined'
-              {...register('name')}
-              error={!!errors.name}
-              helperText={errors.name?.message}
-            />
-          </Grid>
+      <Container component='main' maxWidth='xs'>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={2}>
+            <Grid xs={12}>
+              <TextField
+                fullWidth
+                label='Name'
+                variant='outlined'
+                {...register('name')}
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
+            </Grid>
 
-          <Grid xs={12}>
-            <Controller
-              name='phone'
-              control={control}
-              rules={{
-                validate: matchIsValidTel
-              }}
-              render={({ field }) => (
-                <MuiTelInput
-                  disableFormatting
-                  label={'Phone Number'}
-                  fullWidth
-                  {...field}
-                  defaultCountry='TR'
-                  error={!!errors.phone}
-                  helperText={errors.phone?.message}
+            <Grid xs={12}>
+              <Controller
+                name='phone'
+                control={control}
+                rules={{
+                  validate: matchIsValidTel
+                }}
+                render={({ field }) => (
+                  <MuiTelInput
+                    disableFormatting
+                    label={'Phone Number'}
+                    fullWidth
+                    {...field}
+                    defaultCountry='TR'
+                    error={!!errors.phone}
+                    helperText={errors.phone?.message}
+                  />
+                )}
+              />
+            </Grid>
+
+            <Grid xs={12}>
+              <FormControl fullWidth>
+                <InputLabel id='demo-simple-select-label'>
+                  Select a group
+                </InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='demo-simple-select'
+                  disabled={groupsData && groupsData?.length < 1}
+                  label='Select a group'
+                  placeholder='Select Group'
+                  {...register('group')}
+                  defaultValue={''}
+                  error={!!errors.group}
+                >
+                  {groupsData?.map((group) => {
+                    const { id, group_name } = group
+                    return (
+                      <MenuItem key={id} value={group_name || ''}>
+                        {group_name}
+                      </MenuItem>
+                    )
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid xs={12}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Controller
+                  control={control}
+                  name='last_payment_date'
+                  render={({ field }) => (
+                    <DateField
+                      onChange={(date: string | null) => {
+                        field.onChange(dayjs(date).format('MMM DD YYYY'))
+                      }}
+                      fullWidth
+                      helperText={errors.last_payment_date?.message}
+                      focused={!!errors.next_payment_date}
+                      color={errors.next_payment_date ? 'error' : 'primary'}
+                    />
+                  )}
                 />
-              )}
-            />
-          </Grid>
+              </LocalizationProvider>
+            </Grid>
 
-          <Grid xs={12}>
-            <FormControl fullWidth>
-              <InputLabel id='demo-simple-select-label'>
-                Select a group
-              </InputLabel>
-              <Select
-                labelId='demo-simple-select-label'
-                id='demo-simple-select'
-                disabled={groupsData && groupsData?.length < 1}
-                label='Select a group'
-                placeholder='Select Group'
-                {...register('group')}
-                defaultValue={''}
-                error={!!errors.group}
-              >
-                {groupsData?.map((group) => {
-                  const { id, group_name } = group
-                  return (
-                    <MenuItem key={id} value={group_name || ''}>
-                      {group_name}
-                    </MenuItem>
-                  )
-                })}
-              </Select>
-            </FormControl>
-          </Grid>
+            <Grid xs={12}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Controller
+                  control={control}
+                  name='next_payment_date'
+                  render={({ field }) => (
+                    <DateField
+                      focused={!!errors.next_payment_date}
+                      color={errors.next_payment_date ? 'error' : 'primary'}
+                      onChange={(date: string | null) => {
+                        field.onChange(dayjs(date).format('MMM DD YYYY'))
+                      }}
+                      fullWidth
+                      helperText={errors.next_payment_date?.message}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+            </Grid>
 
-          <Grid xs={12}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Controller
-                control={control}
-                name='last_payment_date'
-                render={({ field }) => (
-                  <DateField
-                    onChange={(date: string | null) => {
-                      field.onChange(dayjs(date).format('MMM DD YYYY'))
-                    }}
-                    fullWidth
-                    helperText={errors.last_payment_date?.message}
-                  />
-                )}
+            <Grid xs={12}>
+              <TextField
+                fullWidth
+                label='Payment'
+                variant='outlined'
+                {...register('payment')}
+                error={!!errors.payment}
+                helperText={errors.payment?.message}
               />
-            </LocalizationProvider>
-          </Grid>
+            </Grid>
 
-          <Grid xs={12}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Controller
-                control={control}
-                name='next_payment_date'
-                render={({ field }) => (
-                  <DateField
-                    onChange={(date: string | null) => {
-                      field.onChange(dayjs(date).format('MMM DD YYYY'))
-                    }}
-                    fullWidth
-                    helperText={errors.next_payment_date?.message}
-                  />
-                )}
-              />
-            </LocalizationProvider>
+            <Grid xs={12}>
+              <Button fullWidth variant='outlined' type='submit'>
+                Add Customer
+              </Button>
+            </Grid>
           </Grid>
-
-          <Grid xs={12}>
-            <TextField
-              fullWidth
-              label='Payment'
-              variant='outlined'
-              {...register('payment')}
-              error={!!errors.payment}
-              helperText={errors.payment?.message}
-            />
-          </Grid>
-
-          <Grid xs={12}>
-            <Button fullWidth variant='outlined' type='submit'>
-              Add Customer
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
-    </Container>
+        </form>
+      </Container>
+    </>
   )
 }

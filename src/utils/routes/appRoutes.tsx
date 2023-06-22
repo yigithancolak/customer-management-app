@@ -2,7 +2,6 @@ import { FunctionComponent } from 'react'
 import { CreateCustomer } from '../../pages/CreateCustomer/CreateCustomer'
 import { Dashboard } from '../../pages/Dashboard/Dashboard'
 import { ErrorPage } from '../../pages/ErrorPage/ErrorPage'
-import { ForgotPassword } from '../../pages/ForgotPassword/ForgotPassword'
 import { Groups } from '../../pages/Groups/Groups'
 import { SignIn } from '../../pages/SignIn/SignIn'
 import { SignUp } from '../../pages/SignUp/SignUp'
@@ -23,7 +22,6 @@ export enum AppRoutes {
   ForgotPassword = '/forgotPassword',
   SignIn = '/signIn',
   SignUp = '/signUp',
-  // Dashboard = '/dashboard',
   CatchAll = '*',
   Root = '/'
 }
@@ -48,18 +46,7 @@ export const AppRouteDefinitions: AppRouteDefinitionProps[] = [
     element: SignUp,
     isProtected: false
   },
-  {
-    path: AppRoutes.ForgotPassword,
-    name: 'Forgot Password',
-    element: ForgotPassword,
-    isProtected: false
-  },
-  // {
-  //   path: AppRoutes.Dashboard,
-  //   name: 'Dashboard',
-  //   element: Dashboard,
-  //   isProtected: true
-  // },
+
   {
     path: AppRoutes.Root,
     name: 'Dashboard',

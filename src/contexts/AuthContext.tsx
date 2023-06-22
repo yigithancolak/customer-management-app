@@ -9,7 +9,6 @@ interface AuthContextProps {
   signOut: () => void
   signIn: (email: string, password: string) => void
   signUp: (email: string, password: string, companyName: string) => void
-  //   setUser: Dispatch<SetStateAction<string | undefined>>
 }
 
 const AuthContext = createContext<AuthContextProps>({
@@ -18,7 +17,6 @@ const AuthContext = createContext<AuthContextProps>({
   signUp: async () => null,
   user: null,
   isLoading: true
-  //   setUser: () => null
 })
 
 const AuthProvider = (props: PropsWithChildren) => {
@@ -72,7 +70,7 @@ const AuthProvider = (props: PropsWithChildren) => {
       return
     }
 
-    toast.error('Signout successfull')
+    toast.success('Signout successful')
   }
 
   const getSession = async () => {

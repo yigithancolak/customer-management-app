@@ -47,8 +47,8 @@ export const SignIn = () => {
       <PasswordCheckList anchorEl={anchorEl} password={watch('password')} />
 
       <Container component='main' maxWidth='xs'>
-        <Typography variant='h6' align='center' gutterBottom>
-          Sign In
+        <Typography variant='h6' align='center' gutterBottom marginY={2}>
+          SIGN IN
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2}>
@@ -85,19 +85,10 @@ export const SignIn = () => {
           </Grid>
         </form>
         <Grid container spacing={2} sx={{ mt: 1 }}>
-          <Grid
-            xs={12}
-            sx={{ display: 'flex', justifyContent: 'space-between' }}
-          >
-            <StyledLink to={AppRoutes.ForgotPassword}>
-              Forgot Password ?
-            </StyledLink>
+          <Grid xs={12}>
             <StyledLink to={AppRoutes.SignUp}>
               Don't have account? Click and sign up
             </StyledLink>
-            {/* <StyledLink to={AppRoutes.ResetPassword}>
-                  {t('resetPassword')}
-                </StyledLink> */}
           </Grid>
         </Grid>
       </Container>

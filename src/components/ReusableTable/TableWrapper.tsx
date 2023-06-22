@@ -2,6 +2,7 @@ import { styled } from '@mui/material'
 
 export const TableWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(2),
+  overflowX: 'auto',
   '& table': {
     borderCollapse: 'separate'
   },

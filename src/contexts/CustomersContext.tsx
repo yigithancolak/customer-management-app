@@ -18,7 +18,6 @@ interface CustomersContextProps {
   getGroups: () => Promise<GroupsTypes[]>
   createGroup: (group_name: string) => void
   deleteGroup: (id: string) => void
-  //   setAccessToken: Dispatch<SetStateAction<string | undefined>>
 }
 
 export type Customers = Database['public']['Tables']['Customers']['Row']
@@ -46,12 +45,10 @@ const CustomersContext = createContext<CustomersContextProps>({
   createGroup: () => null,
   deleteGroup: () => null,
   isLoading: true
-  //   setAccessToken: () => null
 })
 
 const CustomersProvider = (props: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState(false)
-  // const [customers, setCustomers] = useState([])
 
   const { user } = useAuth()
 
@@ -89,18 +86,18 @@ const CustomersProvider = (props: PropsWithChildren) => {
       .select()
 
     if (error) {
-      console.log(error)
+      throw error
     }
   }
 
   const deleteCustomer = async (id: number) => {
-    const { error, data } = await supabase
+    const { error } = await supabase
       .from(DatabaseTables.Customers)
       .delete()
       .eq('id', id)
 
     if (error) {
-      console.log(error)
+      throw error
     }
   }
 
@@ -114,7 +111,7 @@ const CustomersProvider = (props: PropsWithChildren) => {
       .eq('id', id)
 
     if (error) {
-      console.log(error)
+      throw error
     }
   }
 
@@ -127,7 +124,6 @@ const CustomersProvider = (props: PropsWithChildren) => {
     if (error) {
       throw error
     }
-    console.log(data[0])
 
     return data[0]
   }
@@ -139,8 +135,6 @@ const CustomersProvider = (props: PropsWithChildren) => {
     if (error) {
       throw error
     }
-
-    console.log(data)
 
     return data
   }
@@ -155,18 +149,25 @@ const CustomersProvider = (props: PropsWithChildren) => {
       .select()
 
     if (error) {
-      console.log(error)
+      throw error
     }
   }
 
   const deleteGroup = async (groupName: string) => {
-    const { error } = await supabase
+    //For deleting group from Groups table
+    const { error: groupsError } = await supabase
       .from(DatabaseTables.Groups)
       .delete()
       .eq('group_name', groupName)
 
-    if (error) {
-      console.log(error)
+    //For deleting all customers in that groups
+    const { error: customersError } = await supabase
+      .from(DatabaseTables.Customers)
+      .delete()
+      .eq('group', groupName)
+
+    if (groupsError || customersError) {
+      throw groupsError || customersError
     }
   }
 
