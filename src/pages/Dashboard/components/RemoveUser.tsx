@@ -1,4 +1,4 @@
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import { PersonRemove } from '@mui/icons-material'
 import {
   Button,
   CircularProgress,
@@ -45,7 +45,7 @@ export const RemoveUser = (props: RemoveUserProps) => {
   return (
     <>
       <IconButton size='small' onClick={handleClickOpen} color='error'>
-        <DeleteForeverIcon />
+        <PersonRemove />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Please Confirm</DialogTitle>

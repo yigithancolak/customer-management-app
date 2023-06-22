@@ -18,14 +18,12 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 //@ts-ignore
 import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'
-import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { Customers } from '../../contexts/CustomersContext'
 import { useCustomers } from '../../utils/hooks/useCustomers'
-import { AppRoutes } from '../../utils/routes/appRoutes'
 import { createCustomerSchema } from '../../validations/validationSchemas'
 
 type NonNullableProperties<T> = {
@@ -71,20 +69,6 @@ export const CreateCustomer = () => {
     navigate(-1)
   }
 
-  useEffect(() => {
-    if (groupsData && groupsData.length > 0) {
-      return
-    }
-
-    const navigateTimeout = setTimeout(() => {
-      navigate(AppRoutes.Groups)
-    }, 3000)
-
-    return () => {
-      clearTimeout(navigateTimeout)
-    }
-  }, [])
-
   if (groupsData && groupsData.length < 1) {
     return (
       <Container
@@ -95,7 +79,6 @@ export const CreateCustomer = () => {
         <PageHeader title='Create Customer' />
         <Typography textAlign='center'>
           Please create a group from Groups page before you create a customer.
-          Redirecting to groups page
         </Typography>
         <CircularProgress />
       </Container>

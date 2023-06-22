@@ -17,7 +17,7 @@ export const PageHeader = (props: PageHeaderProps) => {
       <IconButton onClick={() => navigate(-1)}>
         <ArrowBackIcon />
       </IconButton>
-      <Typography variant='h4'>{title}</Typography>
+      <Typography variant='h5'>{title}</Typography>
       <DrawerMenu />
     </PageHeaderWrapper>
   )
