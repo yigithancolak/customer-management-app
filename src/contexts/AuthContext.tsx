@@ -41,6 +41,7 @@ const AuthProvider = (props: PropsWithChildren) => {
 
     if (error) {
       toast.error('Signup Error')
+      return
     }
 
     if (data) {
@@ -56,6 +57,7 @@ const AuthProvider = (props: PropsWithChildren) => {
 
     if (error) {
       toast.error('Sign In Error')
+      return
     }
 
     if (data) {
