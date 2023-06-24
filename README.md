@@ -56,7 +56,8 @@ Start the development server
   npm run dev
 ```
 ## App Tutorial Video
-[screen-recording (2).webm](https://github.com/yigithancolak/customer-management-app/assets/122079418/37aa2550-125c-425e-92c0-82c073ddb4d3)
+
+[screen-recording (3).webm](https://github.com/yigithancolak/customer-management-app/assets/122079418/d2a517d7-dc69-480f-b539-987342620146)
 
 
   
