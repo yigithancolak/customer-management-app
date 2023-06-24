@@ -1,7 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
   Button,
-  CircularProgress,
   Container,
   FormControl,
   Unstable_Grid2 as Grid,
@@ -24,6 +23,7 @@ import { toast } from 'react-toastify'
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { Customers } from '../../contexts/CustomersContext'
 import { useCustomers } from '../../utils/hooks/useCustomers'
+import { AppRoutes } from '../../utils/routes/appRoutes'
 import { createCustomerSchema } from '../../validations/validationSchemas'
 
 type NonNullableProperties<T> = {
@@ -71,17 +71,28 @@ export const CreateCustomer = () => {
 
   if (groupsData && groupsData.length < 1) {
     return (
-      <Container
-        component='main'
-        maxWidth='xs'
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-      >
+      <>
         <PageHeader title='Create Customer' />
-        <Typography textAlign='center'>
-          Please create a group from Groups page before you create a customer.
-        </Typography>
-        <CircularProgress />
-      </Container>
+        <Container
+          component='main'
+          maxWidth='xs'
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}
+        >
+          <Typography textAlign='center' marginTop={10}>
+            Please create a group from Groups page before you create a customer.
+          </Typography>
+          <Button
+            variant='contained'
+            onClick={() => navigate(AppRoutes.Groups)}
+          >
+            Groups
+          </Button>
+        </Container>
+      </>
     )
   }
 
