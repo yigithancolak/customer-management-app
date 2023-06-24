@@ -6,11 +6,31 @@ CRM App for businesses that tracks customers, groups and their payment dates. Th
 
 ## Tech Stack
 
-**Language:** Typescript
+### Language
+- TypeScript
 
-**Frameworks and Libaries:** React, MUI, React-hook-form, Dayjs, React-toastify, Tanstack React Query, Tanstack Table
+### Build Tool
+- Vite
 
-**Database:** Supabase
+### Libraries and Frameworks
+- React
+- @emotion/react
+- @emotion/styled
+- @hookform/resolvers
+- @mui/icons-material
+- @mui/material
+- @mui/x-date-pickers
+- @preact/signals-react
+- @supabase/supabase-js
+- @tanstack/react-query
+- @tanstack/react-table
+- Day.js
+- mui-tel-input
+- react-hook-form
+- react-router-dom
+- react-toastify
+- yup
+
 
   
 ## Run it on your computer
@@ -35,5 +55,8 @@ Start the development server
 ```bash
   npm run dev
 ```
+## App Tutorial Video
+[screen-recording (2).webm](https://github.com/yigithancolak/customer-management-app/assets/122079418/37aa2550-125c-425e-92c0-82c073ddb4d3)
+
 
   
