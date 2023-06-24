@@ -32,6 +32,7 @@ const AuthProvider = (props: PropsWithChildren) => {
       email,
       password,
       options: {
+        emailRedirectTo: 'https://customer-management-app.vercel.app/',
         data: {
           company_name: companyName
         }
