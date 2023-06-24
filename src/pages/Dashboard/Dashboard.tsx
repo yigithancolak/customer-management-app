@@ -86,14 +86,16 @@ export const Dashboard = () => {
   )
 
   return (
-    <Container component='main'>
+    <>
       <PageHeader title='Dashboard' />
-      <ReusableTable<Customers>
-        data={data}
-        isFetching={isFetching}
-        title='Customers'
-        columns={columns}
-      />
-    </Container>
+      <Container component='main'>
+        <ReusableTable<Customers>
+          data={data}
+          isFetching={isFetching}
+          title='Customers'
+          columns={columns}
+        />
+      </Container>
+    </>
   )
 }
