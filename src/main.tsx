@@ -45,7 +45,7 @@ root.render(
           <CustomersProvider>
             <BrowserRouter>
               <CssBaseline />
-              <ToastContainer position='bottom-center' />
+              <ToastContainer position='bottom-center' autoClose={1500} />
               <Routes>{renderRoutes()}</Routes>
             </BrowserRouter>
           </CustomersProvider>

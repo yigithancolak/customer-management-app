@@ -21,6 +21,7 @@
     "@tanstack/react-query": "^4.29.14",
     "@tanstack/react-table": "^8.9.2",
     "dayjs": "^1.11.8",
+    "framer-motion": "^10.12.17",
     "mui-tel-input": "^3.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

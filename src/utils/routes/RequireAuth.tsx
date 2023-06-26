@@ -1,4 +1,6 @@
+import { Container } from '@mui/material'
 import { Navigate, useLocation } from 'react-router-dom'
+import { LoadingAnimation } from '../../components/LoadingAnimation/LoadingAnimation'
 import { useAuth } from '../hooks/useAuth'
 import { AppRoutes } from './appRoutes'
 
@@ -12,7 +14,19 @@ export const RequireAuth = (props: RequireAuthProps) => {
   const { user, isLoading } = useAuth()
 
   if (isLoading) {
-    return <span>LOADING</span>
+    return (
+      <Container
+        sx={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <LoadingAnimation />
+      </Container>
+    )
   }
 
   if (!user) {
