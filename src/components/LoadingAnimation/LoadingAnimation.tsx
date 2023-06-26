@@ -30,7 +30,6 @@ export const LoadingAnimation = () => {
   return (
     <motion.svg
       xmlns='http://www.w3.org/2000/svg'
-      className='pizza-svg'
       viewBox='0 0 24 24'
       stroke='#000000'
       strokeWidth={1}
